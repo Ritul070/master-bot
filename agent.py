@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 import json
 import sqlite3
-from tavily import TavilyClient
+
 
 # ==========================================
 # CONFIGURATION
@@ -48,33 +48,26 @@ def query_database(sql_query):
         return str(rows)
     except Exception as e: return f"Database Error: {e}"
     
+    
 def search_web(query):
+    import requests
+    api_key = "PASTE_YOUR_TAVILY_KEY_HERE"
+    url = "https://api.tavily.com/search"
+    payload = {
+        "api_key": api_key,
+        "query": query,
+        "max_results": 2
+    }
     try:
-        response = tavily.search(
-            query=query,
-            search_depth="basic",
-            max_results=2
-        )
-
-        results = response.get("results", [])
-
-        if not results:
-            return "No results found."
-
-        summary = ""
-
-        for i, result in enumerate(results, start=1):
-            summary += (
-                f"Result {i}\n"
-                f"Title: {result.get('title')}\n"
-                f"Summary: {result.get('content')}\n"
-                f"Source: {result.get('url')}\n\n"
-            )
-
-        return summary
-
+        response = requests.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        # Extract the summaries from the results
+        results = data.get("results", [])
+        summaries = [r.get("content", "") for r in results]
+        return "\n".join(summaries)
     except Exception as e:
-        return f"Search Error: {e}"
+        return f"Web Search Error: {e}"
 
 # ==========================================
 # STREAMLIT UI & SESSION STATE
