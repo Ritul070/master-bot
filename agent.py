@@ -8,13 +8,12 @@ import sqlite3
 # CONFIGURATION
 # ==========================================
 API_KEY = st.secrets["API_KEY"]
-TAVILY_API_KEY = st.secrets["TAVILY_API_KEY"]
+
 
 
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel("gemini-2.5-flash")
 
-tavily = TavilyClient(api_key=TAVILY_API_KEY)
 
 # ==========================================
 # THE TOOLS
