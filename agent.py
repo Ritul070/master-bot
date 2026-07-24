@@ -53,7 +53,7 @@ def search_web(query):
     api_key =st.secrets["API_KEY"]
     url = "https://api.tavily.com/search"
     payload = {
-        "api_key": api_key,
+        "api_key": API_KEY,
         "query": query,
         "max_results": 2
     }
