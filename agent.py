@@ -50,7 +50,7 @@ def query_database(sql_query):
     
 def search_web(query):
     import requests
-    api_key = "PASTE_YOUR_TAVILY_KEY_HERE"
+    api_key =st.secrets["API_KEY"]
     url = "https://api.tavily.com/search"
     payload = {
         "api_key": api_key,
